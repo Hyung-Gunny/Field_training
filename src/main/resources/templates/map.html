@@ -1,0 +1,89 @@
+<!--파일명: map.html
+    프로그램 목적 및 기능:
+        - 웹 사이트 화면상에 맵을 보여주고 마커 클릭이나 맵 상에서의 동작을 보여준다.
+    프로그램 작성자: 박 형 건 (2024년 1월 12일 (금))
+    최종 Update: 2024.01.16
+    ===============================================================
+    프로그램 수정 및 보완 이력
+    ===============================================================
+    프로그램 작성자    보완 일자               보완 내용
+    박 형 건        2024.1.12(금)        웹 상의 맵을 보여주기
+    박 형 건        2024.1.16(월)        웹 상의 맵에 사용자 컨트롤러 추가하기
+    ===============================================================
+-->
+
+<!DOCTYPE html>
+<!-- thymeleaf 설정 -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Map</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/mapstyle.css}">
+</head>
+
+<!-- 지도타입의 크기와 스타일을 매치 해줍니다. -->
+<body style="margin: 0; padding: 0; height: 100%;">
+
+<!-- 상단 메뉴바 -->
+<div id="menu-bar">
+    <a href="1">APP</a>
+    <a href="2">지도보기</a>
+    <a href="3">지하매설관로</a>
+    <a href="4">실시간 원격협업</a>
+</div>
+
+<!-- 맵의 크기와 위치 조정 -->
+<div class="map_wrap" style="position: relative; height: 100vh;">
+    <div id="map" style="width: 100%; height: 100%;"></div>
+
+    <!-- 지도타입 컨트롤 div 입니다 -->
+    <div class="custom_typecontrol radius_border">
+        <span id="btnRoadmap" class="selected_btn" onclick="setMapType('roadmap')">지도</span>
+        <span id="btnSkyview" class="btn" onclick="setMapType('skyview')">스카이뷰</span>
+    </div>
+
+    <!-- 지도 확대, 축소 컨트롤 div 입니다 -->
+    <div class="custom_zoomcontrol radius_border">
+        <span onclick="zoomIn()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png" alt="확대"></span>
+        <span onclick="zoomOut()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png" alt="축소"></span>
+    </div>
+</div>
+
+<!-- 카카오 맵 api -->
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=14739eb7d98a9372eb8d2e8d2e3cf8b4"></script>
+<script>
+    //kakao 맵 api 부분입니다.
+    var mapContainer = document.getElementById('map'),
+        mapOption = {
+            center: new kakao.maps.LatLng(35.83914, 128.6834),
+            level: 3
+        };
+
+    var map = new kakao.maps.Map(mapContainer, mapOption);
+
+    //웹 상에서의 사용자 컨트롤러 부분입니다.
+    function setMapType(maptype) {
+        var roadmapControl = document.getElementById('btnRoadmap');
+        var skyviewControl = document.getElementById('btnSkyview');
+        if (maptype === 'roadmap') {
+            map.setMapTypeId(kakao.maps.MapTypeId.ROADMAP);
+            roadmapControl.className = 'selected_btn';
+            skyviewControl.className = 'btn';
+        } else {
+            map.setMapTypeId(kakao.maps.MapTypeId.HYBRID);
+            skyviewControl.className = 'selected_btn';
+            roadmapControl.className = 'btn';
+        }
+    }
+
+    //맵상에서의 줌 컨트롤러를 나태냅니다.
+    function zoomIn() {
+        map.setLevel(map.getLevel() - 1);
+    }
+
+    function zoomOut() {
+        map.setLevel(map.getLevel() + 1);
+    }
+</script>
+</body>
+</html>
