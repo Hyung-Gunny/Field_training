@@ -11,23 +11,23 @@
  *     박 형 건        2024.1.12          웹 상의 맵을 컨트롤
  *     ===============================================================
  */
+//
+//package com.example.demo.map.controller;
 
-package com.example.demo.map.controller;
-
-
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-
-// map.html 로 매핑
-@Controller
-public class MapController {
-    @GetMapping("/map")
-    public String showMap(Model model)
-    {
-
-        return "map";
-    }
-
-}
+//
+//import org.springframework.stereotype.Controller;
+//import org.springframework.ui.Model;
+//import org.springframework.web.bind.annotation.GetMapping;
+//
+//// map.html 로 매핑
+//@Controller("/")
+//public class MapController {
+//    @GetMapping("/map")
+//    public String showMap(Model model)
+//    {
+//
+//        return "map";
+//    }
+//
+//}
 
