@@ -1,5 +1,17 @@
 package com.example.demo.login.entity;
-
+/**
+ *     파일명: Member.java
+ *     프로그램 목적 및 기능:
+ *         - 로그인 기능과 회원가입을 수행 하기 위해 필요한 멤버 변수들
+ *     프로그램 작성자: 박 형 건 (2024년 1월 19일 (금))
+ *     최종 Update: 2024.01.19
+ *     ===================================================================
+ *     프로그램 수정 및 보완 이력
+ *     ===================================================================
+ *     프로그램 작성자    보완 일자               보완 내용
+ *     박 형 건        2024.1.19          멤버 데이터 변수들을 정리
+ *     ===================================================================
+ */
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -57,6 +69,7 @@ public class Member
 
     public void setAddressList(List<memberaddress> addressList)
     {
+
         this.addressList=addressList;
     }
 

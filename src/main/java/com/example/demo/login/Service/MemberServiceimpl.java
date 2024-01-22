@@ -1,4 +1,18 @@
 package com.example.demo.login.Service;
+/**
+ *     파일명: MemberServiceimpl.java
+ *     프로그램 목적 및 기능:
+ *         - 로그인 기능과 회원가입을 수행 하기 위한 에터티와 관련된 비지니스 로직을 처리를
+ *           위한 서비스 클래스
+ *     프로그램 작성자: 박 형 건 (2024년 1월 19일 (금))
+ *     최종 Update: 2024.01.19
+ *     ===================================================================
+ *     프로그램 수정 및 보완 이력
+ *     ===================================================================
+ *     프로그램 작성자    보완 일자               보완 내용
+ *     박 형 건        2024.1.19          비즈니스 로직을 처리하는 서비스 클래스
+ *     ===================================================================
+ */
 
 import com.example.demo.login.repository.MemberRepository;
 import jakarta.transaction.Transactional;
@@ -12,6 +26,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Map;
+
+/**
+ * 회원과 관련된 비즈니스 로직을 처리하는 서비스 클래스.
+ */
 @Service
 public class MemberServiceimpl implements MemberService
 {
@@ -58,11 +76,14 @@ public class MemberServiceimpl implements MemberService
         }
     }
 
+
+
     @Override
     public boolean LogIn(Member member)
     {
-        Optional<Member> memberByEmailAndPassword=memberRepository.findMemberByEmailAndPassword(member.getEmail(), member.getPassword());
+        Optional<Member> memberByEmailAndPassword = memberRepository.findMemberByEmailAndPassword(member.getEmail(), member.getPassword());
         return memberByEmailAndPassword.isPresent();
+
     }
 
     @Override
