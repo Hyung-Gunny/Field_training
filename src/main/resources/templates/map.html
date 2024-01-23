@@ -2,13 +2,15 @@
     프로그램 목적 및 기능:
         - 웹 사이트 화면상에 맵을 보여주고 마커 클릭이나 맵 상에서의 동작을 보여준다.
     프로그램 작성자: 박 형 건 (2024년 1월 12일 (금))
-    최종 Update: 2024.01.16
+    최종 Update: 2024.01.23
     ===============================================================
     프로그램 수정 및 보완 이력
     ===============================================================
     프로그램 작성자    보완 일자               보완 내용
     박 형 건        2024.1.12(금)        웹 상의 맵을 보여주기
-    박 형 건        2024.1.16(월)        웹 상의 맵에 사용자 컨트롤러 추가하기
+    박 형 건        2024.1.15(월)        웹 상의 맵에 사용자 컨트롤러 추가하기
+    박 형 건        2024.1.23(화)        웹 관련 탭을 눌렀을 때 페이지 이동,
+                                       맵 위에 마커를 생성
     ===============================================================
 -->
 
@@ -17,7 +19,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <title>Map</title>
+    <title>지하 매설물 관리 서비스</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/mapstyle.css}">
 </head>
 
@@ -26,10 +28,10 @@
 
 <!-- 상단 메뉴바 -->
 <div id="menu-bar">
-    <a href="1">APP</a>
-    <a href="2">지도보기</a>
-    <a href="3">지하매설관로</a>
-    <a href="4">실시간 원격협업</a>
+    <a href="/app" >APP</a>
+    <a href="/map">지도보기</a>
+    <a href="/underground">지하매설관로</a>
+    <a href="/realtime-collaboration">실시간 원격협업</a>
 </div>
 
 <!-- 맵의 크기와 위치 조정 -->
@@ -85,6 +87,19 @@
     function zoomOut() {
         map.setLevel(map.getLevel() + 1);
     }
+
+    var markerPosition  = new kakao.maps.LatLng(35.83914, 128.6834);
+
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+        position: markerPosition
+    });
+
+    // 마커가 지도 위에 표시되도록 설정합니다
+    marker.setMap(map);
+
+
+
 </script>
 
 </body>
