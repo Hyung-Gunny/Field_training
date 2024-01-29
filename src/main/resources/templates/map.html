@@ -2,7 +2,7 @@
     프로그램 목적 및 기능:
         - 웹 사이트 화면상에 맵을 보여주고 마커 클릭이나 맵 상에서의 동작을 보여준다.
     프로그램 작성자: 박 형 건 (2024년 1월 12일 (금))
-    최종 Update: 2024.01.23
+    최종 Update: 2024.01.29
     ===============================================================
     프로그램 수정 및 보완 이력
     ===============================================================
@@ -11,53 +11,66 @@
     박 형 건        2024.1.15(월)        웹 상의 맵에 사용자 컨트롤러 추가하기
     박 형 건        2024.1.23(화)        웹 관련 탭을 눌렀을 때 페이지 이동,
                                        맵 위에 마커를 생성
+    박 형 건        2024.1.29(월)        웹 상에서의 마커를 클릭 했을 때 팝업
+                                       띄우기
     ===============================================================
 -->
-
 <!DOCTYPE html>
-<!-- thymeleaf 설정 -->
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" />
     <title>지하 매설물 관리 서비스</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/mapstyle.css}">
+    <style>
+        #popup-container {
+            position: absolute;
+            display: none;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #ccc;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        #popup-content {
+            max-width: 300px;
+        }
+    </style>
 </head>
 
-<!-- 지도타입의 크기와 스타일을 매치 해줍니다. -->
 <body style="margin: 0; padding: 0; height: 100%;">
 
-<!-- 상단 메뉴바 -->
+<div id="popup-container">
+    <!-- 팝업 내용이 들어갈 공간 -->
+    <div id="popup-content"></div>
+</div>
+
 <div id="menu-bar">
-    <a href="/app" >APP</a>
+    <a href="/app">APP</a>
     <a href="/map">지도보기</a>
     <a href="/underground">지하매설관로</a>
     <a href="/realtime-collaboration">실시간 원격협업</a>
 </div>
 
-<!-- 맵의 크기와 위치 조정 -->
 <div class="map_wrap" style="position: relative; height: 100vh;">
     <div id="map" style="width: 100%; height: 100%;"></div>
-
-    <!-- 지도타입 컨트롤 div 입니다 -->
     <div class="custom_typecontrol radius_border">
         <span id="btnRoadmap" class="selected_btn" onclick="setMapType('roadmap')">지도</span>
         <span id="btnSkyview" class="btn" onclick="setMapType('skyview')">스카이뷰</span>
     </div>
-
-    <!-- 지도 확대, 축소 컨트롤 div 입니다 -->
     <div class="custom_zoomcontrol radius_border">
-        <span onclick="zoomIn()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png" alt="확대"></span>
-        <span onclick="zoomOut()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png" alt="축소"></span>
+            <span onclick="zoomIn()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png"
+                                          alt="확대"></span>
+        <span onclick="zoomOut()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png"
+                                       alt="축소"></span>
     </div>
 </div>
 
-
-
-<!-- 카카오 맵 api -->
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=14739eb7d98a9372eb8d2e8d2e3cf8b4"></script>
+<script type="text/javascript"
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=14739eb7d98a9372eb8d2e8d2e3cf8b4"></script>
 
 <script>
-    //kakao 맵 api 부분입니다.
     var mapContainer = document.getElementById('map'),
         mapOption = {
             center: new kakao.maps.LatLng(35.83914, 128.6834),
@@ -66,7 +79,75 @@
 
     var map = new kakao.maps.Map(mapContainer, mapOption);
 
-    //웹 상에서의 사용자 컨트롤러 부분입니다.
+    // 마커 생성
+    var markerPosition = new kakao.maps.LatLng(35.83914, 128.6834);
+    var marker = new kakao.maps.Marker({
+        position: markerPosition,
+        map: map
+    });
+
+    // 팝업과 관련된 변수
+    var popupContainer = document.getElementById('popup-container');
+    var popupContent = document.getElementById('popup-content');
+    var popupOpened = false;
+
+    // 맵 클릭 이벤트를 저장할 변수
+    var mapClickEvent = null;
+
+    // 마커 클릭 이벤트
+    kakao.maps.event.addListener(marker, 'click', function () {
+        // 팝업 열기
+        openPopup();
+    });
+
+    // 팝업 열기 함수
+    function openPopup() {
+        // 팝업이 이미 열려있으면 닫기
+        if (popupOpened) {
+            closePopup();
+            return;
+        }
+
+        // 팝업 열기 전 맵 클릭 이벤트 해제
+        if (mapClickEvent) {
+            kakao.maps.event.removeListener(mapClickEvent);
+            mapClickEvent = null; // 이벤트가 해제되었으므로 변수 초기화
+        }
+
+        // 팝업을 중앙에 위치시키고 표시
+        var center = map.getCenter();
+        popupContainer.style.display = 'block';
+        popupContainer.style.left = map.getLevel() > 7 ? '50%' : map.getProjection().pointFromCoords(center).x + 'px';
+        popupContainer.style.top = map.getProjection().pointFromCoords(center).y + 'px';
+        popupContent.innerHTML = '<p>팝업 내용이 여기에 들어갑니다.</p>';
+
+        // 팝업이 열렸음을 표시
+        popupOpened = true;
+
+        // 맵 클릭 이벤트로 팝업 닫기 함수 등록
+        mapClickEvent = kakao.maps.event.addListener(map, 'click', function () {
+            closePopup();
+        });
+    }
+
+    // 팝업 닫기 함수
+    function closePopup() {
+        // 팝업이 열려있지 않으면 무시
+        if (!popupOpened) return;
+
+        // 팝업 닫기
+        popupContainer.style.display = 'none';
+        popupContent.innerHTML = '';
+
+        // 팝업이 닫혔음을 표시
+        popupOpened = false;
+
+        // 맵 클릭 이벤트 다시 등록
+        if (!mapClickEvent) {
+            mapClickEvent = kakao.maps.event.addListener(map, 'click', openPopup);
+        }
+    }
+
     function setMapType(maptype) {
         var roadmapControl = document.getElementById('btnRoadmap');
         var skyviewControl = document.getElementById('btnSkyview');
@@ -81,7 +162,6 @@
         }
     }
 
-    //맵상에서의 줌 컨트롤러를 나태냅니다.
     function zoomIn() {
         map.setLevel(map.getLevel() - 1);
     }
@@ -89,20 +169,8 @@
     function zoomOut() {
         map.setLevel(map.getLevel() + 1);
     }
-
-    var markerPosition  = new kakao.maps.LatLng(35.83914, 128.6834);
-
-    // 마커를 생성합니다
-    var marker = new kakao.maps.Marker({
-        position: markerPosition
-    });
-
-    // 마커가 지도 위에 표시되도록 설정합니다
-    marker.setMap(map);
-
-
-
 </script>
 
 </body>
+
 </html>
