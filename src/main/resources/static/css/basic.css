@@ -1,0 +1,230 @@
+@charset "UTF-8";
+/*------------------------------기본설정--------------------------------*/
+
+/* *, html, body {
+  margin: 0;
+  padding: 0;
+} */
+/*------------------------------초기화--------------------------------*/
+body, h1, h2, h3, h4, h5,h6, p, ul, fieldset  {margin: 0; padding: 0;}
+ul li{list-style: none;}
+a{text-decoration: none;}
+img,fieldset{border: 0;}
+.hidden{position: absolute; left: -9999px;}
+address {font-style: normal;}
+small{font-size: 1em;}
+hr{display: none;}
+img, fieldset {border: 0;}
+table {border-collapse: collapse;}
+
+@font-face {
+    font-family: NotoSansKr;
+    src:url(../webfont/NotoSansKR-Regular-Hestia.html);
+    src:url(../webfont/NotoSansKR-Regular-Hestia-2.html);
+    src:url(../webfont/NotoSansKR-Regular-Hestia-3.html);
+}
+body {
+  background: #fff;
+  color: #1d2023;
+  font-family: 'NotoSansKr', sans-serif;
+  font-size: 16px;
+  letter-spacing: 0.8px;
+  font-weight: normal;
+  min-width: 1500px;
+  position: relative;
+}
+
+ul li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  border: 0;
+}
+
+img.ico {
+  width: 20px;
+}
+
+.clearfix::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.text_center {
+  text-align: center;
+}
+
+.hidden {display: none;}
+
+.inlineBlock {
+    display: inline-block;
+}
+
+h2 {
+  margin-top: 28px;
+  padding-left: 18px;
+  color: #fd992a;
+  background: url(../images/ico_h2.png) 0px 7px no-repeat;
+  background-size: 14px;
+  font-size: 20px;
+
+}
+.r_e_h2{
+  margin-bottom: 28px;
+  margin-top: 0;
+  float: left;
+}
+
+p.h2_explain {
+    color: #929497;
+    margin-left: 20px;
+    font-size: 14px;
+}
+/*------------------------------폰트설정--------------------------------*/
+
+@import url(../../fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+/*------------------------------메뉴바-전체-------------------------------*/
+
+#headerWrap {
+  overflow: hidden;
+  background: #fff;
+  width: 100%;
+  height: 92px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+}
+
+#headerBg {
+  width: 100%;
+  height: 44px;
+  content: "";
+  background: #fff;
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+#header {
+  margin: 0 auto;
+  min-width: 1350px;
+  width: 100%;
+  height: 89px;
+  position: relative;
+  background: #ffffff;
+  z-index: 10;
+  border-bottom: 3.5px solid #fd992a;
+}
+
+/*------------------------------로고,로그인--------------------------------*/
+
+#header h1 img {
+  width: 270px;
+  position: absolute;
+  top: 28px;
+  left: 20px;
+}
+
+#header .top_login img.ico, #header .top_login p {
+  float: left;
+}
+
+#header .top_login {
+  float: right;
+}
+
+#header .top_login p {
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 12px;
+  padding-right: 14px;
+  border-right: 1px solid #fff;
+}
+
+#header .top_login img.ico {
+  margin-top: 13px;
+  padding-right: 14px;
+}
+
+#header .top_login img.ico:last-child {
+  padding-left: 14px;
+}
+
+/*------------------------------메뉴바-메인메뉴--------------------------------*/
+
+#menu>ul {
+  width: 860px;
+  height: 92px;
+  margin: 19px auto;
+}
+
+#menu>ul li.gnb {
+  width: 15%;
+  float: left;
+  height: 44px;
+  text-align: center;
+  position: relative;
+}
+
+#menu .gnb>a {
+  color: #000000;
+  font-size: 18px;
+}
+
+#menu .gnb>a:hover, #menu .gnb>a.on {
+  opacity: 1;
+  font-weight: bold;
+  box-sizing: border-box;
+  color: #fd992a;
+  text-shadow: 0px 0px 1px #fd992a;
+  padding-bottom: 10px;
+}
+
+#menu .gnb>a:hover::before,
+#menu .gnb>a.on::before {
+  content: "";
+  display: block;
+  width: 16px;
+  height: 16px;
+  background-image: url('../images/banner_selection.png');
+  background-size: cover;
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+
+.ico_noti {
+  width: 15px;
+  position: absolute;
+  bottom: 38px;
+}
+
+/*------------------------------메뉴바-세부메뉴--------------------------------*/
+
+#menu .lnb {
+  display: none;
+  width: 300px;
+  height: 44px;
+  position: relative;
+  top: 13px;
+  left: -51px;
+}
+
+#menu .lnb li {
+    width: 25%;
+  float: left;
+  line-height: 44px;
+}
