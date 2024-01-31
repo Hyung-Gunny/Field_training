@@ -38,7 +38,7 @@ html, body {
 
 /* 최상단 메뉴바의 크기 및 스타일 */
 #menu-bar {
-    background-color: ivory;
+    background-color: #1E90FF;
     color: #000;
     padding: 30px;
     text-align: center;
