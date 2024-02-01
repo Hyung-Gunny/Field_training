@@ -2,7 +2,7 @@
     프로그램 목적 및 기능:
         - 웹 사이트 화면상에 맵을 보여주고 마커 클릭이나 맵 상에서의 동작을 보여준다.
     프로그램 작성자: 박 형 건 (2024년 1월 12일 (금))
-    최종 Update: 2024.01.30
+    최종 Update: 2024.02.01
     ===============================================================
     프로그램 수정 및 보완 이력
     ===============================================================
@@ -16,6 +16,7 @@
     박 형 건        2024.1.30(화)        마커 클릭 시 팝업이 아닌 모달창
                                        띄우기
     박 형 건        2024.1.31(수)        모달창 디자인 및 로직 설정
+    박 형 건        2024.2.01(목)        모달창 디자인과 사진 올리기
     ===============================================================
 -->
 <!DOCTYPE html>
@@ -86,6 +87,32 @@
             text-decoration: none;
             color: #333; /* Adjust the color as needed */
          }
+
+        .clear-box {
+            width: 90%; /* Adjust the width as needed */
+            height: 60%; /* Adjust the height as needed */
+            margin: auto; /* Center the box horizontally */
+            margin-top: 20px; /* Adjust the top margin as needed */
+            margin-bottom: 30px;
+            background-color: transparent;
+            border: 3px solid #000;
+        }
+
+      #myButton {
+            background-color: #808080;
+            color: white;
+            padding: 15px 50px; /* 크기 조절을 위한 패딩 조정 */
+            border: none;
+            border-radius: 20px; /* 반원 모양을 위해 border-radius 적용 */
+            cursor: pointer;
+            margin-top: 20px;
+      }
+
+      #myButton:hover {
+           background-color: #696969;
+      }
+
+
     </style>
 </head>
 <!-- 모달창의 코드 -->
@@ -98,13 +125,19 @@
         </div>
         <!-- Navigation bar -->
         <div class="navbar">
-            <a href="#1">통합단면도</a>
-            <a href="#2">상수관로</a>
-            <a href="#3">오수관로</a>
-            <a href="#4">우수관로</a>
-            <a href="#5">도시관로</a>
+            <a href="#1" onclick="loadModalContent('통합단면도')">통합단면도</a>
+            <a href="#2" onclick="loadModalContent('상수관로')">상수관로</a>
+            <a href="#3" onclick="loadModalContent('오수관로')">오수관로</a>
+            <a href="#4" onclick="loadModalContent('우수관로')">우수관로</a>
+            <a href="#5" onclick="loadModalContent('도시관로')">도시관로</a>
         </div>
+        <div class="clear-box">
+            <!-- 이미지 표시 부분 -->
+            <img id="modal-image" th:src="@{/image/image1.png}" style="width: 100%; height: 100%;">
+        </div>
+        <button id="myButton">통합관로정보</button>
         <!-- 모달 내용이 들어갈 공간 -->
+        <div id="modal-inner-content"></div>
     </div>
 </div>
 
@@ -157,6 +190,49 @@
     // 모달 닫기 함수
     function closeModal() {
         modalContainer.style.display = 'none';
+    }
+
+    var currentTab = '통합단면도';
+
+    // 모달 링크 처리
+    function loadModalContent(target) {
+        // 탭이 변경되었을 때만 내용을 업데이트
+        if (target !== currentTab) {
+            // 모달 내용 초기화
+            var modalInnerContent = document.getElementById('modal-inner-content');
+            modalInnerContent.innerHTML = '';
+
+            // 여기에서 각 탭에 대한 처리를 추가합니다.
+            if (target === '통합단면도') {
+                // 예시: 통합단면도 내용 생성
+                var newContent = document.createElement('div');
+
+                modalInnerContent.appendChild(newContent);
+            } else if (target === '상수관로') {
+                // 예시: 상수관로 내용 생성
+                var newContent = document.createElement('div');
+
+                modalInnerContent.appendChild(newContent);
+            } else if (target === '오수관로') {
+                // 예시: 오수관로 내용 생성
+                var newContent = document.createElement('div');
+
+                modalInnerContent.appendChild(newContent);
+            } else if (target === '우수관로') {
+                // 예시: 우수관로 내용 생성
+                var newContent = document.createElement('div');
+
+                modalInnerContent.appendChild(newContent);
+            } else if (target === '도시관로') {
+                // 예시: 도시관로 내용 생성
+                var newContent = document.createElement('div');
+
+                modalInnerContent.appendChild(newContent);
+            }
+
+            // 현재 선택된 탭 업데이트
+            currentTab = target;
+        }
     }
 </script>
 </body>
