@@ -115,6 +115,7 @@
 
     </style>
 </head>
+
 <!-- 모달창의 코드 -->
 <body style="margin: 0; padding: 0; height: 100%;">
 <div id="modal-container">
@@ -131,13 +132,36 @@
             <a href="#4" onclick="loadModalContent('우수관로')">우수관로</a>
             <a href="#5" onclick="loadModalContent('도시관로')">도시관로</a>
         </div>
-        <div class="clear-box">
+        <div class="clear-box" id="modal-clear-box">
             <!-- 이미지 표시 부분 -->
             <img id="modal-image" th:src="@{/image/image1.png}" style="width: 100%; height: 100%;">
         </div>
         <button id="myButton">통합관로정보</button>
         <!-- 모달 내용이 들어갈 공간 -->
         <div id="modal-inner-content"></div>
+    </div>
+</div>
+
+<div id="modal-container2">
+    <div id="modal-content2" class="modal_body">
+        <div class="modal_bar">
+            <span>관로정보</span>
+            <span id="modal-close2">x</span>
+        </div>
+        <!-- Navigation bar -->
+        <div class="navbar">
+            <a href="#1" onclick="loadModalContent('통합단면도')">통합단면도</a>
+            <a href="#2" onclick="loadModalContent('상수관로')">상수관로</a>
+            <a href="#3" onclick="loadModalContent('오수관로')">오수관로</a>
+            <a href="#4" onclick="loadModalContent('우수관로')">우수관로</a>
+            <a href="#5" onclick="loadModalContent('도시관로')">도시관로</a>
+        </div>
+        <div class="clear-box" id="modal-clear-box2">
+            <!-- 이미지 표시 부분 -->
+        </div>
+        <button id="myButton2">통합관로정보</button>
+        <!-- 모달 내용이 들어갈 공간 -->
+        <div id="modal-inner-content2"></div>
     </div>
 </div>
 
@@ -172,6 +196,29 @@
         map: map
     });
 
+    //웹 상에서의 사용자 컨트롤러 부분입니다.
+    function setMapType(maptype) {
+        var roadmapControl = document.getElementById('btnRoadmap');
+        var skyviewControl = document.getElementById('btnSkyview');
+        if (maptype === 'roadmap') {
+            map.setMapTypeId(kakao.maps.MapTypeId.ROADMAP);
+            roadmapControl.className = 'selected_btn';
+            skyviewControl.className = 'btn';
+        } else {
+            map.setMapTypeId(kakao.maps.MapTypeId.HYBRID);
+            skyviewControl.className = 'selected_btn';
+            roadmapControl.className = 'btn';
+        }
+    }
+    //맵상에서의 줌 컨트롤러를 나태냅니다.
+    function zoomIn() {
+        map.setLevel(map.getLevel() - 1);
+    }
+    function zoomOut() {
+        map.setLevel(map.getLevel() + 1);
+    }
+
+
     var modalContainer = document.getElementById('modal-container');
 
     // 마커 클릭 시 모달 열기
@@ -192,48 +239,6 @@
         modalContainer.style.display = 'none';
     }
 
-    var currentTab = '통합단면도';
-
-    // 모달 링크 처리
-    function loadModalContent(target) {
-        // 탭이 변경되었을 때만 내용을 업데이트
-        if (target !== currentTab) {
-            // 모달 내용 초기화
-            var modalInnerContent = document.getElementById('modal-inner-content');
-            modalInnerContent.innerHTML = '';
-
-            // 여기에서 각 탭에 대한 처리를 추가합니다.
-            if (target === '통합단면도') {
-                // 예시: 통합단면도 내용 생성
-                var newContent = document.createElement('div');
-
-                modalInnerContent.appendChild(newContent);
-            } else if (target === '상수관로') {
-                // 예시: 상수관로 내용 생성
-                var newContent = document.createElement('div');
-
-                modalInnerContent.appendChild(newContent);
-            } else if (target === '오수관로') {
-                // 예시: 오수관로 내용 생성
-                var newContent = document.createElement('div');
-
-                modalInnerContent.appendChild(newContent);
-            } else if (target === '우수관로') {
-                // 예시: 우수관로 내용 생성
-                var newContent = document.createElement('div');
-
-                modalInnerContent.appendChild(newContent);
-            } else if (target === '도시관로') {
-                // 예시: 도시관로 내용 생성
-                var newContent = document.createElement('div');
-
-                modalInnerContent.appendChild(newContent);
-            }
-
-            // 현재 선택된 탭 업데이트
-            currentTab = target;
-        }
-    }
 </script>
 </body>
 </html>
