@@ -112,7 +112,7 @@
             background-color: #696969;
         }
 
-         .layer-popup #myButton2 {
+        .layer-popup #myButton2 {
             background-color: #808080;
             color: white;
             padding: 15px 50px; /* 크기 조절을 위한 패딩 조정 */
@@ -137,12 +137,12 @@
             z-index: 999; /* 레이어 팝업보다 아래에 위치하도록 설정 */
         }
 
-       .layer-popup .layer-tab-content .evbar {
+        .layer-popup .layer-tab-content .evbar {
             display: flex;
             justify-content: space-around;
             align-items: center;
             margin-top: 30px; /* 조정된 값 */
-       }
+        }
         .layer-popup .layer-tab-content .evbar a {
             font-size: 18px; /* Adjust the font size as needed */
             margin: 10px; /* Adjust the margin as needed */
@@ -218,13 +218,14 @@
         <span id="btnSkyview" class="btn" onclick="setMapType('skyview')">스카이뷰</span>
     </div>
     <div class="custom_zoomcontrol radius_border">
-            <span onclick="zoomIn()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png"
-                                          alt="확대"></span>
+        <span onclick="zoomIn()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png"
+                                      alt="확대"></span>
         <span onclick="zoomOut()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png"
                                        alt="축소"></span>
     </div>
 </div>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=942df974e7d934611f87f36d36efbe92"></script>
+<script type="text/javascript"
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=942df974e7d934611f87f36d36efbe92"></script>
 <!-- 맵 부분의 스크립트 영역 -->
 <script>
     var mapContainer = document.getElementById('map'),
@@ -283,7 +284,7 @@
 
     function selectEvbarTab(tabId) {
         var clearBoxes = document.querySelectorAll('.layer-tab-content .clear-box');
-        clearBoxes.forEach(function(clearBox) {
+        clearBoxes.forEach(function (clearBox) {
             clearBox.style.display = 'none'; // 모든 clear box를 숨김
         });
 
@@ -305,47 +306,18 @@
             case '상수관로':
                 openLayerPopup('layer-tab2');
                 selectEvbarTab('1');
-                switch (tabName) {
-                    case '관로정보':
-                        loadContent('1');
-                    case '단면도' :
-                        loadContent('2');
-                    case '360°vr' :
-                        loadContent('3');
-                }
                 break;
             case '오수관로':
+                openLayerPopup('layer-tab2');
                 selectEvbarTab('1');
-                switch (tabName) {
-                    case '관로정보':
-                        loadContent('1');
-                    case '단면도' :
-                        loadContent('2');
-                    case '360°vr' :
-                        loadContent('3');
-                }
                 break;
             case '우수관로':
+                openLayerPopup('layer-tab2');
                 selectEvbarTab('1');
-                switch (tabName) {
-                    case '관로정보':
-                        loadContent('1');
-                    case '단면도' :
-                        loadContent('2');
-                    case '360°vr' :
-                        loadContent('3');
-                }
                 break;
             case '도시관로':
+                openLayerPopup('layer-tab2');
                 selectEvbarTab('1');
-                switch (tabName) {
-                    case '관로정보':
-                        loadContent('1');
-                    case '단면도' :
-                        loadContent('2');
-                    case '360°vr' :
-                        loadContent('3');
-                }
                 break;
             default:
                 break;
