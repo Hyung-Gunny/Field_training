@@ -2,7 +2,7 @@
     프로그램 목적 및 기능:
         - 웹 사이트 화면상에 맵을 보여주고 마커 클릭이나 맵 상에서의 동작을 보여준다.
     프로그램 작성자: 박 형 건 (2024년 1월 12일 (금))
-    최종 Update: 2024.02.01
+    최종 Update: 2024.02.06
     ===============================================================
     프로그램 수정 및 보완 이력
     ===============================================================
@@ -18,6 +18,8 @@
     박 형 건        2024.1.31(수)        모달창 디자인 및 로직 설정
     박 형 건        2024.2.01(목)        모달창 디자인과 사진 올리기
     박 형 건        2024.2.05(월)        모달창이 아닌 레이어 팝업으로 변경
+    박 형 건        2024.2.06(화)        레이어 팝업을 클릭 탭마다 로직을 넣어
+                                       각각의 화면을 반응 하도록 구현 함
     ===============================================================
 -->
 <!DOCTYPE html>
@@ -27,6 +29,7 @@
     <meta charset="utf-8" />
     <title>지하 매설물 관리 서비스</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/mapstyle.css}">
+    <!-- 레이어 팝업 style -->
     <style>
         /* 레이어 팝업 스타일 수정 */
         .layer-popup {
@@ -36,7 +39,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             width: 600px;
-            height: 550px;
+            height: 570px;
             text-align: center;
             background-color: rgb(255, 255, 255);
             border-radius: 10px;
@@ -75,15 +78,25 @@
             color: #333; /* Adjust the color as needed */
         }
 
+        .layer-popup .clear-box0 {
+            width: 90%; /* Adjust the width as needed */
+            height: 60%; /* Adjust the height as needed */
+            margin: auto; /* Center the box horizontally */
+            margin-top: 20px; /* Adjust the top margin as needed */
+            margin-bottom: 20px;
+            background-color: transparent;
+            border: 3px solid #000;
+        }
         .layer-popup .clear-box {
             width: 90%; /* Adjust the width as needed */
             height: 60%; /* Adjust the height as needed */
             margin: auto; /* Center the box horizontally */
             margin-top: 20px; /* Adjust the top margin as needed */
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             background-color: transparent;
             border: 3px solid #000;
         }
+
 
         .layer-popup #myButton {
             background-color: #808080;
@@ -92,12 +105,27 @@
             border: none;
             border-radius: 20px; /* 반원 모양을 위해 border-radius 적용 */
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 5px;
         }
 
         .layer-popup #myButton:hover {
             background-color: #696969;
         }
+
+         .layer-popup #myButton2 {
+            background-color: #808080;
+            color: white;
+            padding: 15px 50px; /* 크기 조절을 위한 패딩 조정 */
+            border: none;
+            border-radius: 20px; /* 반원 모양을 위해 border-radius 적용 */
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        .layer-popup #myButton2:hover {
+            background-color: #696969;
+        }
+
         .overlay {
             display: none;
             position: fixed;
@@ -108,16 +136,30 @@
             background: rgba(0, 0, 0, 0.5); /* 검은색 배경 및 투명도 조절 */
             z-index: 999; /* 레이어 팝업보다 아래에 위치하도록 설정 */
         }
+
+       .layer-popup .layer-tab-content .evbar {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 30px; /* 조정된 값 */
+       }
+        .layer-popup .layer-tab-content .evbar a {
+            font-size: 18px; /* Adjust the font size as needed */
+            margin: 10px; /* Adjust the margin as needed */
+            text-decoration: none;
+            color: #333; /* Adjust the color as needed */
+        }
     </style>
 </head>
-<!-- 모달창의 코드 -->
+
+<!-- 레이어 팝업의 코드 -->
 <div class="overlay" id="overlay"></div>
 <div class="layer-popup" id="layer-popup">
     <div class="popup-bar">
         <span>관로정보</span>
         <span class="popup-close" onclick="closeLayerPopup()">x</span>
     </div>
-    <!-- Navigation bar -->
+    <!-- 원래 팝업창의 클릭 탭 -->
     <div class="navbar">
         <a href="#1" onclick="loadModalContent('통합단면도')">통합단면도</a>
         <a href="#2" onclick="loadModalContent('상수관로')">상수관로</a>
@@ -125,16 +167,41 @@
         <a href="#4" onclick="loadModalContent('우수관로')">우수관로</a>
         <a href="#5" onclick="loadModalContent('도시관로')">도시관로</a>
     </div>
-    <div class="clear-box">
-        <!-- 이미지 표시 부분 -->
-        <img id="modal-image" th:src="@{/image/image1.png}" style="width: 100%; height: 100%;">
+    <div id="layer-tab1" class="layer-tab-content">
+        <div class="clear-box0">
+            <!-- 이미지 표시 부분 -->
+            <img id="modal-image" th:src="@{/image/image1.png}" style="width: 100%; height: 100%;">
+        </div>
+        <!-- 레이어 팝업안의 버튼 -->
+        <button id="myButton">통합관로정보</button>
+        <!-- 레이어 팝업 내용이 들어갈 공간 -->
+        <div id="layer-popup-inner-content"></div>
     </div>
-    <button id="myButton">통합관로정보</button>
-    <!-- 레이어 팝업 내용이 들어갈 공간 -->
-    <div id="layer-popup-inner-content"></div>
+    <!-- 레이어 팝업 2번째 창의  모습 -->
+    <div id="layer-tab2" class="layer-tab-content">
+        <!-- 레이어팝업 안의 탭 -->
+        <div class="evbar">
+            <a href="#a" onclick="loadContent('관로정보')">관로정보</a>
+            <a href="#b" onclick="loadContent('단면도')">단면도</a>
+            <a href="#c" onclick="loadContent('360°vr')">360°vr</a>
+        </div>
+        <!-- 각각의 탭 마다의 내용 -->
+        <div id="clear-box1" class="clear-box" style="display:none">
+            <p>관로정보 표시</p>
+        </div>
+        <div id="clear-box2" class="clear-box" style="display:none">
+            <p>단면도 표시</p>
+        </div>
+        <div id="clear-box3" class="clear-box" style="display:none">
+            <p>Vr 표시</p>
+        </div>
+        <button id="myButton2">통합관로정보</button>
+        <!-- 레이어 팝업 내용이 들어갈 공간 -->
+        <div id="layer-popup-inner-content2"></div>
+    </div>
 </div>
 
-
+<!-- 맵 메뉴 바 -->
 <div id="menu-bar">
     <a href="/app">APP</a>
     <a href="/map">지도보기</a>
@@ -176,9 +243,16 @@
 
     var modalContainer = document.getElementById('modal-container');
 
+    // 레이어 팝업 초기화 함수
+    function initLayerPopup() {
+        closeLayerPopup();
+        closeLayerPopup();
+    }
+
     // 마커 클릭 시 모달 열기
     kakao.maps.event.addListener(marker, 'click', function () {
-        openModal();
+        initLayerPopup();
+        openLayerPopup('layer-tab1');
     });
 
     function openOverlay() {
@@ -193,10 +267,105 @@
     }
 
     // 레이어 팝업 열기 함수
-    function openLayerPopup() {
+    function openLayerPopup(tabId) {
         openOverlay(); // 불투명한 배경 열기
         var layerPopup = document.getElementById('layer-popup');
         layerPopup.style.display = 'block';
+
+        var tabContents = document.querySelectorAll('.layer-tab-content');
+        tabContents.forEach(function (tabContent) {
+            tabContent.style.display = 'none';
+        });
+
+        var selectedTab = document.getElementById(tabId);
+        selectedTab.style.display = 'block';
+    }
+
+    function selectEvbarTab(tabId) {
+        var clearBoxes = document.querySelectorAll('.layer-tab-content .clear-box');
+        clearBoxes.forEach(function(clearBox) {
+            clearBox.style.display = 'none'; // 모든 clear box를 숨김
+        });
+
+        var selectedClearBox = document.getElementById('clear-box' + tabId);
+        selectedClearBox.style.display = 'block';
+    }
+
+    // 초기 레이어 팝업 설정
+    document.addEventListener('DOMContentLoaded', function () {
+        initLayerPopup();
+    });
+
+    function loadModalContent(tabName) {
+        switch (tabName) {
+            case '통합단면도':
+                openLayerPopup('layer-tab1');
+                selectEvbarTab('0');
+                break;
+            case '상수관로':
+                openLayerPopup('layer-tab2');
+                selectEvbarTab('1');
+                switch (tabName) {
+                    case '관로정보':
+                        loadContent('1');
+                    case '단면도' :
+                        loadContent('2');
+                    case '360°vr' :
+                        loadContent('3');
+                }
+                break;
+            case '오수관로':
+                selectEvbarTab('1');
+                switch (tabName) {
+                    case '관로정보':
+                        loadContent('1');
+                    case '단면도' :
+                        loadContent('2');
+                    case '360°vr' :
+                        loadContent('3');
+                }
+                break;
+            case '우수관로':
+                selectEvbarTab('1');
+                switch (tabName) {
+                    case '관로정보':
+                        loadContent('1');
+                    case '단면도' :
+                        loadContent('2');
+                    case '360°vr' :
+                        loadContent('3');
+                }
+                break;
+            case '도시관로':
+                selectEvbarTab('1');
+                switch (tabName) {
+                    case '관로정보':
+                        loadContent('1');
+                    case '단면도' :
+                        loadContent('2');
+                    case '360°vr' :
+                        loadContent('3');
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    function loadContent(tabName) {
+        switch (tabName) {
+            case '관로정보':
+                selectEvbarTab('1');
+                break;
+            case '단면도':
+                selectEvbarTab('2');
+                break;
+            case '360°vr':
+                selectEvbarTab('3');
+                break;
+            default:
+                break;
+        }
     }
 
     // 레이어 팝업 닫기 함수
@@ -204,11 +373,6 @@
         closeOverlay(); // 불투명한 배경 닫기
         var layerPopup = document.getElementById('layer-popup');
         layerPopup.style.display = 'none';
-    }
-
-    // 기존 모달 열기 함수 수정
-    function openModal() {
-        openLayerPopup();
     }
 
     function setMapType(maptype) {
@@ -232,7 +396,6 @@
     function zoomOut() {
         map.setLevel(map.getLevel() + 1);
     }
-
 </script>
 </body>
 </html>
