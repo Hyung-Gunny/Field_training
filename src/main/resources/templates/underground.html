@@ -10,6 +10,7 @@
     박 형 건        2024.1.23(금)        메인 맵 페이지에서 상단바 선택 시
                                        화면이 넘어가도록 구성
     박 형 건        2024.2.02(금)        현재 페이지의 틀 구성
+    박 형 건        2024.2.07(수)        페이지 구성 완료
     ===============================================================
 -->
 <!DOCTYPE html>
@@ -17,10 +18,111 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width. initial-scale=1.0">
     <title>지하매설관로</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/mapstyle.css}">
-</head>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+        }
 
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .search-bar input {
+            width: 300px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        .search-bar button {
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #000;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .table-container {
+            border: 1px solid #ccc;
+            width: 100%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        th {
+            text-align: center;
+        }
+
+        td img {
+            width: 100px;
+        }
+
+        .paging {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .paging a {
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin: 0 5px;
+            text-decoration: none;
+        }
+
+        .paging a:hover {
+            background-color: #ccc;
+        }
+
+
+        .dropdown1 {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: flex-start; /* 드롭다운 메뉴를 왼쪽으로 정렬 */
+            align-items: center;
+        }
+
+        .dropdown1 select {
+            margin-right: 10px;
+        }
+
+
+        .underground-management-heading
+        {
+            margin-top: 120px;
+            margin-bottom: 50px;
+        }
+
+
+    </style>
+</head>
 <body>
     <div id="menu-bar">
         <a href="/app">APP</a>
@@ -29,5 +131,89 @@
         <a href="/realtime-collaboration">실시간 원격협업</a>
     </div>
 
+    <div id="underground-management" class="underground-management-heading">
+        <h2>> 지하 매설 관리</h2>
+    </div>
+
+    <div id="topbar">
+        <div class="dropdown-container">
+            <section class="dropdown1">
+                <select>
+                    <option value="">관로종류</option>
+                    <option value="1">도시가스</option>
+                    <option value="2">상수관로</option>
+                    <option value="3">전기관로</option>
+                    <option value="4">우수1관로</option>
+                    <option value="5">우수2관로</option>
+                    <option value="6">오수1관로</option>
+                    <option value="7">오수2관로</option>
+                </select>
+                <select>
+                    <option value="">지구단위</option>
+                    <option value="1">수성의료지구</option>
+                    <option value="2">안심뉴타운</option>
+                    <option value="3">대구광역시</option>
+                </select>
+            </section>
+        </div>
+        <div class="search-bar">
+            <section class="search-bar">
+                <form action="#">
+                    <input type="text" placeholder="검색어를 입력하세요">
+                    <button type="submit">검색</button>
+                </form>
+            </section>
+        </div>
+    </div>
+
+    <main>
+        <section class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>파이프 ID</th>
+                        <th>현장 사진</th>
+                        <th>그룹 상태</th>
+                        <th>관로 종륲</th>
+                        <th>관로 재질</th>
+                        <th>관로 깊이</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>현장사진 추가</td>
+                        <td>정상</td>
+                        <td>상수</td>
+                        <td>PVC</td>
+                        <td>1m</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>현장사진 추가</td>
+                        <td>유지 보수 필요</td>
+                        <td>하수</td>
+                        <td>콘크리트</td>
+                        <td>2m</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>현장사진 추가</td>
+                        <td>정상</td>
+                        <td>전기</td>
+                        <td>강철</td>
+                        <td>3m</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <section class="paging">
+            <a href="#">이전</a>
+            <a href="#">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">다음</a>
+        </section>
+    </main>
 </body>
 </html>

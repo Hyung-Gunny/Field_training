@@ -151,223 +151,241 @@
         }
     </style>
 </head>
+<body>
 
-<!-- 레이어 팝업의 코드 -->
-<div class="overlay" id="overlay"></div>
-<div class="layer-popup" id="layer-popup">
-    <div class="popup-bar">
-        <span>관로정보</span>
-        <span class="popup-close" onclick="closeLayerPopup()">x</span>
-    </div>
-    <!-- 원래 팝업창의 클릭 탭 -->
-    <div class="navbar">
-        <a href="#1" onclick="loadModalContent('통합단면도')">통합단면도</a>
-        <a href="#2" onclick="loadModalContent('상수관로')">상수관로</a>
-        <a href="#3" onclick="loadModalContent('오수관로')">오수관로</a>
-        <a href="#4" onclick="loadModalContent('우수관로')">우수관로</a>
-        <a href="#5" onclick="loadModalContent('도시관로')">도시관로</a>
-    </div>
-    <div id="layer-tab1" class="layer-tab-content">
-        <div class="clear-box0">
-            <!-- 이미지 표시 부분 -->
-            <img id="modal-image" th:src="@{/image/image1.png}" style="width: 100%; height: 100%;">
+    <!-- 레이어 팝업의 코드 -->
+    <div class="overlay" id="overlay"></div>
+    <div class="layer-popup" id="layer-popup">
+        <div class="popup-bar">
+            <span>관로정보</span>
+            <span class="popup-close" onclick="closeLayerPopup()">x</span>
         </div>
-        <!-- 레이어 팝업안의 버튼 -->
-        <button id="myButton">통합관로정보</button>
-        <!-- 레이어 팝업 내용이 들어갈 공간 -->
-        <div id="layer-popup-inner-content"></div>
-    </div>
-    <!-- 레이어 팝업 2번째 창의  모습 -->
-    <div id="layer-tab2" class="layer-tab-content">
-        <!-- 레이어팝업 안의 탭 -->
-        <div class="evbar">
-            <a href="#a" onclick="loadContent('관로정보')">관로정보</a>
-            <a href="#b" onclick="loadContent('단면도')">단면도</a>
-            <a href="#c" onclick="loadContent('360°vr')">360°vr</a>
+        <!-- 원래 팝업창의 클릭 탭 -->
+        <div class="navbar">
+            <a href="#1" onclick="loadModalContent('통합단면도')">통합단면도</a>
+            <a href="#2" onclick="loadModalContent('상수관로')">상수관로</a>
+            <a href="#3" onclick="loadModalContent('오수관로')">오수관로</a>
+            <a href="#4" onclick="loadModalContent('우수관로')">우수관로</a>
+            <a href="#5" onclick="loadModalContent('도시관로')">도시관로</a>
         </div>
-        <!-- 각각의 탭 마다의 내용 -->
-        <div id="clear-box1" class="clear-box" style="display:none">
-            <p>관로정보 표시</p>
+        <div id="layer-tab1" class="layer-tab-content">
+            <div class="clear-box0">
+                <!-- 이미지 표시 부분 -->
+                <img id="modal-image" th:src="@{/image/image1.png}" style="width: 100%; height: 100%;">
+            </div>
+            <!-- 레이어 팝업안의 버튼 -->
+            <button id="myButton" href="/integratedpipeline">통합관로정보</button>
+            <!-- 레이어 팝업 내용이 들어갈 공간 -->
+            <div id="layer-popup-inner-content"></div>
         </div>
-        <div id="clear-box2" class="clear-box" style="display:none">
-            <p>단면도 표시</p>
+        <!-- 레이어 팝업 2번째 창의  모습 -->
+        <div id="layer-tab2" class="layer-tab-content">
+            <!-- 레이어팝업 안의 탭 -->
+            <div class="evbar">
+                <a href="#a" onclick="loadContent('관로정보')">관로정보</a>
+                <a href="#b" onclick="loadContent('단면도')">단면도</a>
+                <a href="#c" onclick="loadContent('360°vr')">360°vr</a>
+            </div>
+            <!-- 각각의 탭 마다의 내용 -->
+            <div id="clear-box1" class="clear-box" style="display:none">
+                <p>관로정보 표시</p>
+            </div>
+            <div id="clear-box2" class="clear-box" style="display:none">
+                <p>단면도 표시</p>
+            </div>
+            <div id="clear-box3" class="clear-box" style="display:none">
+                <p>Vr 표시</p>
+            </div>
+            <button id="myButton2">개별관로정보</button>
+            <!-- 레이어 팝업 내용이 들어갈 공간 -->
+            <div id="layer-popup-inner-content2"></div>
         </div>
-        <div id="clear-box3" class="clear-box" style="display:none">
-            <p>Vr 표시</p>
+    </div>
+
+    <!-- 맵 메뉴 바 -->
+    <div id="menu-bar">
+        <a href="/app">APP</a>
+        <a href="/map">지도보기</a>
+        <a href="/underground">지하매설관로</a>
+        <a href="/realtime-collaboration">실시간 원격협업</a>
+    </div>
+
+
+    <!-- 맵 부분 -->
+    <div class="map_wrap" style="position: relative; height: 100vh;">
+        <div id="map" style="width: 100%; height: 100%;"></div>
+        <div class="custom_typecontrol radius_border">
+            <span id="btnRoadmap" class="selected_btn" onclick="setMapType('roadmap')">지도</span>
+            <span id="btnSkyview" class="btn" onclick="setMapType('skyview')">스카이뷰</span>
         </div>
-        <button id="myButton2">통합관로정보</button>
-        <!-- 레이어 팝업 내용이 들어갈 공간 -->
-        <div id="layer-popup-inner-content2"></div>
+        <div class="custom_zoomcontrol radius_border">
+            <span onclick="zoomIn()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png"
+                                          alt="확대"></span>
+            <span onclick="zoomOut()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png"
+                                           alt="축소"></span>
+        </div>
     </div>
-</div>
+    <script type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=942df974e7d934611f87f36d36efbe92"></script>
+    <!-- 맵 부분의 스크립트 영역 -->
+    <script>
+        var mapContainer = document.getElementById('map'),
+            mapOption = {
+                center: new kakao.maps.LatLng(35.83914, 128.6834),
+                level: 3
+            };
 
-<!-- 맵 메뉴 바 -->
-<div id="menu-bar">
-    <a href="/app">APP</a>
-    <a href="/map">지도보기</a>
-    <a href="/underground">지하매설관로</a>
-    <a href="/realtime-collaboration">실시간 원격협업</a>
-</div>
+        var map = new kakao.maps.Map(mapContainer, mapOption);
 
+    <!--    var clusterer = new kakao.maps.MarkerClusterer({-->
+    <!--        map: map,-->
+    <!--        averageCenter: true,-->
+    <!--        minLevel: 10-->
+    <!--    });-->
 
-<!-- 맵 부분 -->
-<div class="map_wrap" style="position: relative; height: 100vh;">
-    <div id="map" style="width: 100%; height: 100%;"></div>
-    <div class="custom_typecontrol radius_border">
-        <span id="btnRoadmap" class="selected_btn" onclick="setMapType('roadmap')">지도</span>
-        <span id="btnSkyview" class="btn" onclick="setMapType('skyview')">스카이뷰</span>
-    </div>
-    <div class="custom_zoomcontrol radius_border">
-        <span onclick="zoomIn()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png"
-                                      alt="확대"></span>
-        <span onclick="zoomOut()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png"
-                                       alt="축소"></span>
-    </div>
-</div>
-<script type="text/javascript"
-        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=942df974e7d934611f87f36d36efbe92"></script>
-<!-- 맵 부분의 스크립트 영역 -->
-<script>
-    var mapContainer = document.getElementById('map'),
-        mapOption = {
-            center: new kakao.maps.LatLng(35.83914, 128.6834),
-            level: 3
-        };
+    <!--    $.get("/download/web/data/chicken.json", function(data) {-->
 
-    var map = new kakao.maps.Map(mapContainer, mapOption);
+    <!--        var markers = $(data.positions).map(function(i, position) {-->
+    <!--            return new kakao.maps.Marker({-->
+    <!--                position : new kakao.maps.LatLng(35.83914, 128.6834)-->
+    <!--            });-->
+    <!--        });-->
 
-    var markerPosition = new kakao.maps.LatLng(35.83914, 128.6834);
-    var marker = new kakao.maps.Marker({
-        position: markerPosition,
-        map: map
-    });
+    <!--        cluster.addMarkers(markers);-->
+    <!--    });-->
 
-    var modalContainer = document.getElementById('modal-container');
-
-    // 레이어 팝업 초기화 함수
-    function initLayerPopup() {
-        closeLayerPopup();
-        closeLayerPopup();
-    }
-
-    // 마커 클릭 시 모달 열기
-    kakao.maps.event.addListener(marker, 'click', function () {
-        initLayerPopup();
-        openLayerPopup('layer-tab1');
-    });
-
-    function openOverlay() {
-        var overlay = document.getElementById('overlay');
-        overlay.style.display = 'block';
-    }
-
-    // 불투명한 배경 닫기 함수
-    function closeOverlay() {
-        var overlay = document.getElementById('overlay');
-        overlay.style.display = 'none';
-    }
-
-    // 레이어 팝업 열기 함수
-    function openLayerPopup(tabId) {
-        openOverlay(); // 불투명한 배경 열기
-        var layerPopup = document.getElementById('layer-popup');
-        layerPopup.style.display = 'block';
-
-        var tabContents = document.querySelectorAll('.layer-tab-content');
-        tabContents.forEach(function (tabContent) {
-            tabContent.style.display = 'none';
+        var markerPosition = new kakao.maps.LatLng(35.83914, 128.6834);
+        var marker = new kakao.maps.Marker({
+            position: markerPosition,
+            map: map
         });
 
-        var selectedTab = document.getElementById(tabId);
-        selectedTab.style.display = 'block';
-    }
+        var modalContainer = document.getElementById('modal-container');
 
-    function selectEvbarTab(tabId) {
-        var clearBoxes = document.querySelectorAll('.layer-tab-content .clear-box');
-        clearBoxes.forEach(function (clearBox) {
-            clearBox.style.display = 'none'; // 모든 clear box를 숨김
+        // 레이어 팝업 초기화 함수
+        function initLayerPopup() {
+            closeLayerPopup();
+            closeLayerPopup();
+        }
+
+        // 마커 클릭 시 모달 열기
+        kakao.maps.event.addListener(marker, 'click', function () {
+            initLayerPopup();
+            openLayerPopup('layer-tab1');
         });
 
-        var selectedClearBox = document.getElementById('clear-box' + tabId);
-        selectedClearBox.style.display = 'block';
-    }
-
-    // 초기 레이어 팝업 설정
-    document.addEventListener('DOMContentLoaded', function () {
-        initLayerPopup();
-    });
-
-    function loadModalContent(tabName) {
-        switch (tabName) {
-            case '통합단면도':
-                openLayerPopup('layer-tab1');
-                selectEvbarTab('0');
-                break;
-            case '상수관로':
-                openLayerPopup('layer-tab2');
-                selectEvbarTab('1');
-                break;
-            case '오수관로':
-                openLayerPopup('layer-tab2');
-                selectEvbarTab('1');
-                break;
-            case '우수관로':
-                openLayerPopup('layer-tab2');
-                selectEvbarTab('1');
-                break;
-            case '도시관로':
-                openLayerPopup('layer-tab2');
-                selectEvbarTab('1');
-                break;
-            default:
-                break;
+        function openOverlay() {
+            var overlay = document.getElementById('overlay');
+            overlay.style.display = 'block';
         }
-    }
 
-    function loadContent(tabName) {
-        switch (tabName) {
-            case '관로정보':
-                selectEvbarTab('1');
-                break;
-            case '단면도':
-                selectEvbarTab('2');
-                break;
-            case '360°vr':
-                selectEvbarTab('3');
-                break;
-            default:
-                break;
+        // 불투명한 배경 닫기 함수
+        function closeOverlay() {
+            var overlay = document.getElementById('overlay');
+            overlay.style.display = 'none';
         }
-    }
 
-    // 레이어 팝업 닫기 함수
-    function closeLayerPopup() {
-        closeOverlay(); // 불투명한 배경 닫기
-        var layerPopup = document.getElementById('layer-popup');
-        layerPopup.style.display = 'none';
-    }
+        // 레이어 팝업 열기 함수
+        function openLayerPopup(tabId) {
+            openOverlay(); // 불투명한 배경 열기
+            var layerPopup = document.getElementById('layer-popup');
+            layerPopup.style.display = 'block';
 
-    function setMapType(maptype) {
-        var roadmapControl = document.getElementById('btnRoadmap');
-        var skyviewControl = document.getElementById('btnSkyview');
-        if (maptype === 'roadmap') {
-            map.setMapTypeId(kakao.maps.MapTypeId.ROADMAP);
-            roadmapControl.className = 'selected_btn';
-            skyviewControl.className = 'btn';
-        } else {
-            map.setMapTypeId(kakao.maps.MapTypeId.HYBRID);
-            skyviewControl.className = 'selected_btn';
-            roadmapControl.className = 'btn';
+            var tabContents = document.querySelectorAll('.layer-tab-content');
+            tabContents.forEach(function (tabContent) {
+                tabContent.style.display = 'none';
+            });
+
+            var selectedTab = document.getElementById(tabId);
+            selectedTab.style.display = 'block';
         }
-    }
 
-    function zoomIn() {
-        map.setLevel(map.getLevel() - 1);
-    }
+        function selectEvbarTab(tabId) {
+            var clearBoxes = document.querySelectorAll('.layer-tab-content .clear-box');
+            clearBoxes.forEach(function (clearBox) {
+                clearBox.style.display = 'none'; // 모든 clear box를 숨김
+            });
 
-    function zoomOut() {
-        map.setLevel(map.getLevel() + 1);
-    }
-</script>
+            var selectedClearBox = document.getElementById('clear-box' + tabId);
+            selectedClearBox.style.display = 'block';
+        }
+
+        // 초기 레이어 팝업 설정
+        document.addEventListener('DOMContentLoaded', function () {
+            initLayerPopup();
+        });
+
+        function loadModalContent(tabName) {
+            switch (tabName) {
+                case '통합단면도':
+                    openLayerPopup('layer-tab1');
+                    selectEvbarTab('0');
+                    break;
+                case '상수관로':
+                    openLayerPopup('layer-tab2');
+                    selectEvbarTab('1');
+                    break;
+                case '오수관로':
+                    openLayerPopup('layer-tab2');
+                    selectEvbarTab('1');
+                    break;
+                case '우수관로':
+                    openLayerPopup('layer-tab2');
+                    selectEvbarTab('1');
+                    break;
+                case '도시관로':
+                    openLayerPopup('layer-tab2');
+                    selectEvbarTab('1');
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        function loadContent(tabName) {
+            switch (tabName) {
+                case '관로정보':
+                    selectEvbarTab('1');
+                    break;
+                case '단면도':
+                    selectEvbarTab('2');
+                    break;
+                case '360°vr':
+                    selectEvbarTab('3');
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        // 레이어 팝업 닫기 함수
+        function closeLayerPopup() {
+            closeOverlay(); // 불투명한 배경 닫기
+            var layerPopup = document.getElementById('layer-popup');
+            layerPopup.style.display = 'none';
+        }
+
+        function setMapType(maptype) {
+            var roadmapControl = document.getElementById('btnRoadmap');
+            var skyviewControl = document.getElementById('btnSkyview');
+            if (maptype === 'roadmap') {
+                map.setMapTypeId(kakao.maps.MapTypeId.ROADMAP);
+                roadmapControl.className = 'selected_btn';
+                skyviewControl.className = 'btn';
+            } else {
+                map.setMapTypeId(kakao.maps.MapTypeId.HYBRID);
+                skyviewControl.className = 'selected_btn';
+                roadmapControl.className = 'btn';
+            }
+        }
+
+        function zoomIn() {
+            map.setLevel(map.getLevel() - 1);
+        }
+
+        function zoomOut() {
+            map.setLevel(map.getLevel() + 1);
+        }
+    </script>
 </body>
 </html>

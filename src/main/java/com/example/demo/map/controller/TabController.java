@@ -48,4 +48,6 @@ public class TabController
         return "collaboration";
     }
 
+    @GetMapping("/integratedpipeline")
+    public String Integratedpipeline(){return "integratedpipeline";}
 }
