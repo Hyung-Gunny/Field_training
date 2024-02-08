@@ -2,7 +2,7 @@
     프로그램 목적 및 기능:
         - 지하매설물관리에 관한 페이지를 보여준다.
     프로그램 작성자: 박 형 건 (2024년 1월 23일 (화))
-    최종 Update: 2024.02.02
+    최종 Update: 2024.02.08
     ===============================================================
     프로그램 수정 및 보완 이력
     ===============================================================
@@ -11,6 +11,7 @@
                                        화면이 넘어가도록 구성
     박 형 건        2024.2.02(금)        현재 페이지의 틀 구성
     박 형 건        2024.2.07(수)        페이지 구성 완료
+    박 형 건        2024.2.08(목)        페이지 디자인 마무리
     ===============================================================
 -->
 <!DOCTYPE html>
@@ -103,7 +104,7 @@
 
 
         .dropdown1 {
-            margin-bottom: 20px;
+            margin-bottom: -50px;
             display: flex;
             justify-content: flex-start; /* 드롭다운 메뉴를 왼쪽으로 정렬 */
             align-items: center;
@@ -118,6 +119,12 @@
         {
             margin-top: 120px;
             margin-bottom: 50px;
+        }
+
+        .topbars {
+            padding: 10px;
+            margin-bottom: 20px;
+            margin-top: 0;
         }
 
 
@@ -135,7 +142,7 @@
         <h2>> 지하 매설 관리</h2>
     </div>
 
-    <div id="topbar">
+    <div id="topbar" class="topbars">
         <div class="dropdown-container">
             <section class="dropdown1">
                 <select>

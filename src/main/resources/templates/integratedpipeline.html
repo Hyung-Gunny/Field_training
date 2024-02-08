@@ -2,12 +2,13 @@
     프로그램 목적 및 기능:
         - 통합 관로에 대한 페이지이다.
     프로그램 작성자: 박 형 건 (2024년 2월 07일 (수))
-    최종 Update: 2024.02.07
+    최종 Update: 2024.02.08
     ===============================================================
     프로그램 수정 및 보완 이력
     ===============================================================
     프로그램 작성자    보완 일자               보완 내용
     박 형 건        2024.2.07(수)         페이지 구성
+    박 형 건        2024.2.08(목)         페이지 디자인 완성
     ===============================================================
 -->
 <!DOCTYPE html>
@@ -18,6 +19,27 @@
     <title>통합관로 정보</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/mapstyle.css}">
     <style>
+
+        #title, #clear {
+            margin-top: 100px; /* title과 clear 요소를 아래로 내리기 위한 여백 추가 */
+        }
+
+        .clears .clear-box0 {
+            display: flex;
+            flex:1;
+            width: 50%; /* Adjust the width as needed */
+            height: 50%; /* Adjust the height as needed */
+            margin: auto; /* Center the box horizontally */
+            margin-top: 20px; /* Adjust the top margin as needed */
+            margin-bottom: 20px;
+            background-color: transparent;
+            border: 3px solid #000;
+        }
+
+        .clears img {
+            max-width:100%;
+            height: auto;
+        }
 
     </style>
 </head>
@@ -30,5 +52,30 @@
         <a href="/realtime-collaboration">실시간 원격협업</a>
     </div>
 
+    <div id="title" class="titles">
+        <p>>통합관로정보</p>
+    </div>
+
+    <div id="clear" class="clears">
+        <p>>통합단면도</p>
+        <div class="clear-box0">
+            <!-- 이미지 표시 부분 -->
+            <img id="modal-image" th:src="@{/image/image1.png}" style="width: 50%; height: 50%;">
+        </div>
+    </div>
+
+
+        <p>>위치정보</p>
+        <div id="map" style="width:50%; height:50%"></div>
+        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=942df974e7d934611f87f36d36efbe92"></script>
+    <script>
+        var mapContainer = document.getElementById('map'),
+            mapOption = {
+                center: new kakao.maps.LatLng(35.83914, 128.6834),
+                level: 3
+            };
+
+        var map = new kakao.maps.Map(mapContainer, mapOption);
+    </script>
 </body>
 </html>

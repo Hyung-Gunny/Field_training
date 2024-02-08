@@ -2,7 +2,7 @@
     프로그램 목적 및 기능:
         - 웹 사이트 화면상에 맵을 보여주고 마커 클릭이나 맵 상에서의 동작을 보여준다.
     프로그램 작성자: 박 형 건 (2024년 1월 12일 (금))
-    최종 Update: 2024.02.06
+    최종 Update: 2024.02.08
     ===============================================================
     프로그램 수정 및 보완 이력
     ===============================================================
@@ -20,6 +20,7 @@
     박 형 건        2024.2.05(월)        모달창이 아닌 레이어 팝업으로 변경
     박 형 건        2024.2.06(화)        레이어 팝업을 클릭 탭마다 로직을 넣어
                                        각각의 화면을 반응 하도록 구현 함
+    박 형 건        2024.2.08(목)        통합 관로 버튼 로직 구현
     ===============================================================
 -->
 <!DOCTYPE html>
@@ -174,7 +175,7 @@
                 <img id="modal-image" th:src="@{/image/image1.png}" style="width: 100%; height: 100%;">
             </div>
             <!-- 레이어 팝업안의 버튼 -->
-            <button id="myButton" href="/integratedpipeline">통합관로정보</button>
+            <button id="myButton">통합관로정보</button>
             <!-- 레이어 팝업 내용이 들어갈 공간 -->
             <div id="layer-popup-inner-content"></div>
         </div>
@@ -386,6 +387,11 @@
         function zoomOut() {
             map.setLevel(map.getLevel() + 1);
         }
+
+        document.getElementById("myButton").addEventListener("click", function() {
+            window.location.href="/integratedpipeline";
+        });
+
     </script>
 </body>
 </html>
