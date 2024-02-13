@@ -2,7 +2,7 @@
     프로그램 목적 및 기능:
         - 웹 사이트 화면상에 맵을 보여주고 마커 클릭이나 맵 상에서의 동작을 보여준다.
     프로그램 작성자: 박 형 건 (2024년 1월 12일 (금))
-    최종 Update: 2024.02.08
+    최종 Update: 2024.02.13
     ===============================================================
     프로그램 수정 및 보완 이력
     ===============================================================
@@ -21,6 +21,7 @@
     박 형 건        2024.2.06(화)        레이어 팝업을 클릭 탭마다 로직을 넣어
                                        각각의 화면을 반응 하도록 구현 함
     박 형 건        2024.2.08(목)        통합 관로 버튼 로직 구현
+    박 형 건        2024.2.13(화)        여러 마커 클릭
     ===============================================================
 -->
 <!DOCTYPE html>
@@ -238,28 +239,24 @@
 
         var map = new kakao.maps.Map(mapContainer, mapOption);
 
-    <!--    var clusterer = new kakao.maps.MarkerClusterer({-->
-    <!--        map: map,-->
-    <!--        averageCenter: true,-->
-    <!--        minLevel: 10-->
-    <!--    });-->
+        var markerPosition = [
+            new kakao.maps.LatLng(35.839182, 128.683303),
+            new kakao.maps.LatLng(35.839133, 128.683165),
+            new kakao.maps.LatLng(35.839060, 128.682979),
+        ];
 
-    <!--    $.get("/download/web/data/chicken.json", function(data) {-->
+        for (let i = 0; i < markerPosition.length; i++) {
+            let marker = new kakao.maps.Marker({
+                position: markerPosition[i],
+                map: map
+            });
 
-    <!--        var markers = $(data.positions).map(function(i, position) {-->
-    <!--            return new kakao.maps.Marker({-->
-    <!--                position : new kakao.maps.LatLng(35.83914, 128.6834)-->
-    <!--            });-->
-    <!--        });-->
+            // 각 마커에 클릭 이벤트 추가
+            kakao.maps.event.addListener(marker, 'click', function () {
+                openLayerPopup('layer-tab1');
+            });
+        }
 
-    <!--        cluster.addMarkers(markers);-->
-    <!--    });-->
-
-        var markerPosition = new kakao.maps.LatLng(35.83914, 128.6834);
-        var marker = new kakao.maps.Marker({
-            position: markerPosition,
-            map: map
-        });
 
         var modalContainer = document.getElementById('modal-container');
 
